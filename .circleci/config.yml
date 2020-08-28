@@ -1,0 +1,49 @@
+version: 2.1
+orbs:
+    node: circleci/node@4.0.0
+
+jobs:
+    Run-Tests:
+        executor:
+            name: node/default
+        steps:
+            - checkout
+            - node/install-packages
+            - run:
+                  name: Run unit tests
+                  command: npm run test
+            - run:
+                  name: Run prettier
+                  command: npm run format:check
+
+    Deploy:
+        parameters:
+            tenant:
+                type: string
+        executor:
+            name: node/default
+        steps:
+            - checkout
+            - node/install-packages
+            - run:
+                  name: Build project
+                  command: npm run build
+#            - run:
+#                  name: Deploy to server
+#                  command: |
+#                      npx surge --project ./build --domain demo-<< parameters.tenant >>.surge.sh
+
+
+
+
+workflows:
+    test_and_deploy:
+        jobs:
+            - Run-Tests
+            - Deploy:
+                context: Demo-<< matrix.tenant >>
+                matrix:
+                  parameters:
+                    tenant: ['coca', 'pepsi']
+                requires:
+                  - Run-Tests
