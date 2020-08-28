@@ -28,10 +28,10 @@ jobs:
             - run:
                   name: Build project
                   command: npm run build
-#            - run:
-#                  name: Deploy to server
-#                  command: |
-#                      npx surge --project ./build --domain demo-<< parameters.tenant >>.surge.sh
+            - run:
+                  name: Deploy to server
+                  command: |
+                      npx surge --project ./build --domain demo-<< parameters.tenant >>.surge.sh
 
 workflows:
     test_and_deploy:
