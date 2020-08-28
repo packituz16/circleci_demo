@@ -33,17 +33,14 @@ jobs:
 #                  command: |
 #                      npx surge --project ./build --domain demo-<< parameters.tenant >>.surge.sh
 
-
-
-
 workflows:
     test_and_deploy:
         jobs:
             - Run-Tests
             - Deploy:
-                context: Demo-<< matrix.tenant >>
-                matrix:
-                  parameters:
-                    tenant: ['coca', 'pepsi']
-                requires:
-                  - Run-Tests
+                  context: Demo-<< matrix.tenant >>
+                  matrix:
+                      parameters:
+                          tenant: ["coca", "pepsi"]
+                  requires:
+                      - Run-Tests
